@@ -58,7 +58,7 @@ def create_modules(module_defs):
         elif module_def["type"] == "yolo":
             anchor_idxs = [int(x) for x in module_def["mask"].split(",")]
             # Extract anchors
-            anchors = [int(x) for x in module_def["anchors"].split(",")]
+            anchors = [float(x) for x in module_def["anchors"].split(",")]
             anchors = [(anchors[i], anchors[i+1]) for i in range(0, len(anchors),2)]
             anchors = [anchors[i] for i in anchor_idxs]
             num_classes = int(module_def['classes'])
@@ -221,7 +221,7 @@ class Darknet(nn.Module):
 
         #Open the weights file
         fp = open(weights_path, "rb")
-        header = np.fromfile(fp, dtype=np.int32, count=5)   # First five are header values
+        header = np.fromfile(fp, dtype=np.int32, count=4)   # First five are header values
 
         # Needed to write header when saving weights
         self.header_info = header
